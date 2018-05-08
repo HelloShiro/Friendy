@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import PKHUD
 
 class RegisterViewController: UIViewController {
 
@@ -40,9 +41,12 @@ class RegisterViewController: UIViewController {
             let password = passwordTextField.text,
             let name = nameTextField.text else { return }
         
+        HUD.show(.progress)
         if email == "" || password == "" || name == "" {
+            
             displaySimpleAlert(title: "Create Account Fail", message: "Please enter your informations.")
         } else if imageView.image == UIImage(named: "add_image") {
+            
             displaySimpleAlert(title: "Create Account Fail", message: "Please upload your image.")
         } else {
             register(email: email, password: password, name: name)
@@ -87,12 +91,16 @@ class RegisterViewController: UIViewController {
         }
     }
     
+    var customTabBarController: CustomTabBarController?
+    
     private func registerUser(_ uid: String, _ values: [String: NSObject]) {
         let usersReference = FirebaseManager.usersRef.child(uid)
         usersReference.updateChildValues(values) { (error, reference) in
             guard error == nil else { return }
-            
-            self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
+            self.customTabBarController?.login()
+
+            self.presentingViewController?.presentingViewController?.dismiss(animated: true, completion: nil)
+
         }
     }
     

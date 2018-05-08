@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import PKHUD
 
 class CustomTabBarController: UITabBarController {
 
@@ -135,6 +136,7 @@ extension CustomTabBarController {
             UserDefaultConstants.CURRENT_USER)
         setViewControllers()
         self.selectedIndex = 2
+        HUD.hide()
     }
     
     func fetchCurrentUser() {

@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import PKHUD
 extension UIViewController {
 
     func getCurrentUser() -> User? {
@@ -23,7 +23,7 @@ extension UIViewController {
     static var alertController: UIAlertController!
     
     func displaySimpleAlert(title: String, message: String) {
-        
+        HUD.hide()
         if UIViewController.alertController != nil {
             dismissAlert()
         }

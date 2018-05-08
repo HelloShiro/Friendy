@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation
 import Firebase
+import PKHUD
 
 class LoginViewController: UIViewController {
 
@@ -38,6 +39,8 @@ class LoginViewController: UIViewController {
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
+        emailTextField.text = ""
+        passwordTextField.text = ""
         avPlayer?.pause()
     }
     
@@ -56,13 +59,12 @@ class LoginViewController: UIViewController {
         guard let email = emailTextField.text, let password = passwordTextField.text else {
             return
         }
-        
+        HUD.show(.progress)
         Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
             if error != nil {
                 self.displaySimpleAlert(title: "Login Fail", message: error!.localizedDescription)
                 return
             }
-            
             // Successfully logged in
             self.customTabBarController?.login()
             self.dismiss(animated: true, completion: nil)
@@ -72,6 +74,7 @@ class LoginViewController: UIViewController {
     }
     @IBAction func signUpButtonTapped(_ sender: UIButton) {
         let registerViewController = RegisterViewController(nibName: AccountConstants.REGISTER_VIEW_CONTROLLER, bundle: nil)
+        registerViewController.customTabBarController = customTabBarController
         present(registerViewController, animated: true, completion: nil)
     }
     
